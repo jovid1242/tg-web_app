@@ -14,7 +14,7 @@ function App() {
   return (
     <div className="App">
       <h1>hiii</h1>
-      <button>close</button>
+      <button onClick={onToggleButton}>ToggleButton</button>
     </div>
   );
 }
