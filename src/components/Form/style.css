@@ -1,21 +1,26 @@
 .form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    padding: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 20px;
 }
 
 .input {
-    width: 100%;
-    padding: 10px;
-    margin-top: 15px;
-    border-radius: 8px;
-    border-color: var(--tg-theme-bg-color);
+  width: 100%;
+  padding: 10px;
+  margin-top: 15px;
+  border-radius: 8px;
+  outline: none !important;
+  border: 2px solid #6a22f3;
+}
+.input:focus {
+  outline: none !important;
+  box-shadow: 0 1px 20px #6a22f399;
 }
 
 .select {
-    padding: 10px;
-    margin-top: 15px;
-    border-radius: 8px;
-    border-color: var(--tg-theme-bg-color);
+  padding: 10px;
+  margin-top: 15px;
+  border-radius: 8px;
+  border: 2px solid #6a22f3;
 }
