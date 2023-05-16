@@ -9,9 +9,13 @@
     width: 100%;
     padding: 10px;
     margin-top: 15px;
+    border-radius: 8px;
+    border-color: var(--tg-theme-bg-color);
 }
 
 .select {
     padding: 10px;
     margin-top: 15px;
+    border-radius: 8px;
+    border-color: var(--tg-theme-bg-color);
 }
