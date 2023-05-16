@@ -56,7 +56,7 @@ const Form = () => {
       />
       <input
         className={"input"}
-        type="text"
+        type="number"
         placeholder={"Депозить"}
         value={depozit}
         onChange={onChangeDepozit}
