@@ -3,17 +3,18 @@ import "./style.css";
 import { useTelegram } from "../../hooks/useTelegram";
 
 const Form = () => {
-  const [client_name, setClient_name] = useState("");
-  const [depozit, setDepozit] = useState("");
+  const [auth, setAuth] = useState({
+    user_name: "",
+    url: "",
+    count: "",
+    price: "",
+  });
+
   const { tg } = useTelegram();
 
   const onSendData = useCallback(() => {
-    const data = {
-      client_name,
-      depozit,
-    };
-    tg.sendData(JSON.stringify(data));
-  }, [client_name, depozit]);
+    tg.sendData(JSON.stringify(auth));
+  }, [auth]);
 
   useEffect(() => {
     tg.onEvent("mainButtonClicked", onSendData);
@@ -24,42 +25,54 @@ const Form = () => {
 
   useEffect(() => {
     tg.MainButton.setParams({
-      text: "Присоединиться в марафон",
+      text: "Оправить",
     });
   }, []);
 
   useEffect(() => {
-    if (!depozit || !client_name) {
+    if (!auth.user_name || !auth.count || !auth.url || !auth.price) {
       tg.MainButton.hide();
     } else {
       tg.MainButton.show();
     }
-  }, [client_name, depozit]);
+  }, [auth]);
 
-  const onChangeClientName = (e) => {
-    setClient_name(e.target.value);
-  };
-
-  const onChangeDepozit = (e) => {
-    setDepozit(e.target.value);
+  const onChangeAuth = (e) => {
+    setAuth({ ...auth, [e.target.name]: e.target.value });
   };
 
   return (
     <div className={"form"}>
-      <h3>Введите ваши данные для участие в марафон</h3>
+      <h3>Заполните поля </h3>
       <input
+        name="user_name"
         className={"input"}
         type="text"
-        placeholder={"Имя"}
-        value={client_name}
-        onChange={onChangeClientName}
+        placeholder={"ФИО"}
+        onChange={onChangeAuth}
       />
       <input
+        name="url"
+        className={"input"}
+        type="text"
+        placeholder={"ССылка продукта"}
+        onChange={onChangeAuth}
+      />
+
+      <input
+        name="count"
         className={"input"}
         type="number"
-        placeholder={"Депозить"}
-        value={depozit}
-        onChange={onChangeDepozit}
+        placeholder={"Количество товара"}
+        onChange={onChangeAuth}
+      />
+
+      <input
+        name="price"
+        className={"input"}
+        type="number"
+        placeholder={"Цена товара"}
+        onChange={onChangeAuth}
       />
     </div>
   );
