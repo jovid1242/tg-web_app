@@ -5,15 +5,21 @@ import { useTelegram } from "../../hooks/useTelegram";
 const Form = () => {
   const [auth, setAuth] = useState({
     user_name: "",
-    url: "",
-    count: "",
-    price: "",
+    surname: "",
+    phone: "",
+    address: "",
   });
 
   const { tg } = useTelegram();
 
   const onSendData = useCallback(() => {
-    tg.sendData(JSON.stringify(auth));
+    const data = {
+      name: auth.user_name,
+      surname: auth.surname,
+      phone: auth.phone,
+      address: auth.address,
+    };
+    tg.sendData(JSON.stringify(data));
   }, [auth]);
 
   useEffect(() => {
@@ -48,30 +54,30 @@ const Form = () => {
         name="user_name"
         className={"input"}
         type="text"
-        placeholder={"ФИО"}
+        placeholder={"Имя"}
         onChange={onChangeAuth}
       />
       <input
-        name="url"
+        name="surname"
         className={"input"}
         type="text"
-        placeholder={"ССылка продукта"}
+        placeholder={"Фамилия"}
         onChange={onChangeAuth}
       />
 
       <input
-        name="count"
+        name="phone"
         className={"input"}
         type="number"
-        placeholder={"Количество товара"}
+        placeholder={"Номер телефон"}
         onChange={onChangeAuth}
       />
 
       <input
-        name="price"
+        name="address"
         className={"input"}
-        type="number"
-        placeholder={"Цена товара"}
+        type="text"
+        placeholder={"Адресс"}
         onChange={onChangeAuth}
       />
     </div>
