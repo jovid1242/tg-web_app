@@ -35,14 +35,15 @@ const Form = () => {
     });
   }, []);
 
-  // useEffect(() => {
-  //   console.log('auth', auth);
-  //   if (!auth.user_name) {
-  //     tg.MainButton.hide();
-  //   } else {
-  //     tg.MainButton.show();
-  //   }
-  // }, [auth]);
+  useEffect(() => {
+    tg.MainButton.show();
+    // console.log('auth', auth);
+    // if (!auth.user_name) {
+    //   tg.MainButton.hide();
+    // } else {
+    //   tg.MainButton.show();
+    // }
+  }, [auth]);
 
   const onChangeAuth = (e) => {
     setAuth({ ...auth, [e.target.name]: e.target.value });
