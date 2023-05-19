@@ -36,7 +36,7 @@ const Form = () => {
   }, []);
 
   useEffect(() => {
-    if (!auth.user_name || !auth.count || !auth.url || !auth.price) {
+    if (!auth.user_name || !auth.surname ) {
       tg.MainButton.hide();
     } else {
       tg.MainButton.show();
