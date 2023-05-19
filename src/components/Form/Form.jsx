@@ -36,6 +36,7 @@ const Form = () => {
   }, []);
 
   useEffect(() => {
+    console.log('auth', auth);
     if (!auth.user_name) {
       tg.MainButton.hide();
     } else {
