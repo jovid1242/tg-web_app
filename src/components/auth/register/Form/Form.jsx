@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { useTelegram } from "../../../../hooks/useTelegram";
+
 import "./style.css";
-import { useTelegram } from "../../hooks/useTelegram";
 
 const Form = () => {
   const [auth, setAuth] = useState({
