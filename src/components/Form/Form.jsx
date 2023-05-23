@@ -37,12 +37,11 @@ const Form = () => {
 
   useEffect(() => {
     tg.MainButton.show();
-    // console.log('auth', auth);
-    // if (!auth.user_name) {
-    //   tg.MainButton.hide();
-    // } else {
-    //   tg.MainButton.show();
-    // }
+    if (!auth.user_name) {
+      tg.MainButton.hide();
+    } else {
+      tg.MainButton.show();
+    }
   }, [auth]);
 
   const onChangeAuth = (e) => {
