@@ -25,7 +25,7 @@ export default function CreateOrder() {
 
   useEffect(() => {
     tg.MainButton.setParams({
-      text: "Оправить",
+      text: "Заказать",
     });
   }, []);
 
