@@ -46,25 +46,25 @@ export default function CreateOrder() {
     <div className={"form"}>
       <h3>Заполните поля </h3>
       <input
-        name="price"
+        name="link"
         className={"input"}
         type="text"
-        placeholder={"Цена"}
+        placeholder={"Ссылка"}
         onChange={onChangedata}
       />
 
+      <input
+        name="price"
+        className={"input"}
+        type="number"
+        placeholder={"Цена"}
+        onChange={onChangedata}
+      /> 
       <input
         name="quantity"
         className={"input"}
         type="number"
         placeholder={"Количество"}
-        onChange={onChangedata}
-      />
-      <input
-        name="link"
-        className={"input"}
-        type="text"
-        placeholder={"Ссылка"}
         onChange={onChangedata}
       />
     </div>
