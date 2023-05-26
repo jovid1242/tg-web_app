@@ -8,7 +8,7 @@ const validDomains = ["detail.1688.com"];
 export default function CreateOrder() {
   const [data, setData] = useState({
     quantity: "",
-    link: "",
+    link: null,
   });
   const [isValidLink, setIsValidLink] = useState(true);
 
@@ -45,14 +45,14 @@ export default function CreateOrder() {
       return false;
     }
     const url = new URL(string);
-    
+
     return validDomains.includes(url.hostname);
   };
 
   useEffect(() => {
     const isValid = isValidURL(data.link);
 
-    setIsValidLink(isValid); 
+    setIsValidLink(data.link === null ? true : isValid);
 
     if (!isValid || !data.link || !data.quantity) {
       tg.MainButton.hide();
