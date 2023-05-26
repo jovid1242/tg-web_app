@@ -49,8 +49,14 @@ export default function CreateOrder() {
     return validDomains.includes(url.hostname);
   };
 
+  const urlify = (text) => {
+    var urlRegex =
+      /https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)/g;
+    return String(text).match(urlRegex);
+  };
+
   useEffect(() => {
-    const isValid = isValidURL(data.link);
+    let isValid = isValidURL(data.link);
 
     setIsValidLink(data.link === null ? true : isValid);
 
@@ -62,7 +68,11 @@ export default function CreateOrder() {
   }, [data]);
 
   const onChangedata = (e) => {
-    setData({ ...data, [e.target.name]: e.target.value });
+    let value = e.target.value;
+    if (e.target.name === "link") {
+      value = isValidURL(value) ? value : urlify(value)?.[0];
+    }
+    setData({ ...data, [e.target.name]: value });
   };
 
   return (
@@ -74,6 +84,7 @@ export default function CreateOrder() {
         type="text"
         placeholder={"Ссылка*"}
         onChange={onChangedata}
+        value={data.link || ''}
       />
       {!isValidLink && (
         <div className="error">
