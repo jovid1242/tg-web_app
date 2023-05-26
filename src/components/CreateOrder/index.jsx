@@ -3,7 +3,7 @@ import { useTelegram } from "../../hooks/useTelegram";
 
 import "./style.css";
 
-const validDomains = ["detail.1688.com", "qr.1688.com"];
+const validDomains = ["detail.1688.com", "qr.1688.com", "m.1688.com"];
 
 export default function CreateOrder() {
   const [data, setData] = useState({
