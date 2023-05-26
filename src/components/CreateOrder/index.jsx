@@ -3,11 +3,14 @@ import { useTelegram } from "../../hooks/useTelegram";
 
 import "./style.css";
 
+const validDomains = ["detail.1688.com"];
+
 export default function CreateOrder() {
-  const [data, setData] = useState({ 
+  const [data, setData] = useState({
     quantity: "",
     link: "",
   });
+  const [isValidLink, setIsValidLink] = useState(true);
 
   const { tg } = useTelegram();
 
@@ -28,9 +31,30 @@ export default function CreateOrder() {
     });
   }, []);
 
+  const isValidURL = (string) => {
+    var pattern = new RegExp(
+      "^(https?:\\/\\/)?" +
+        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" +
+        "((\\d{1,3}\\.){3}\\d{1,3}))" +
+        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" +
+        "(\\?[;&a-z\\d%_.~+=-]*)?" +
+        "(\\#[-a-z\\d_]*)?$",
+      "i"
+    );
+    if (!pattern.test(string)) {
+      return false;
+    }
+    const url = new URL(string);
+    
+    return validDomains.includes(url.hostname);
+  };
+
   useEffect(() => {
-    tg.MainButton.show();
-    if (!data.link || !data.quantity) {
+    const isValid = isValidURL(data.link);
+
+    setIsValidLink(isValid); 
+
+    if (!isValid || !data.link || !data.quantity) {
       tg.MainButton.hide();
     } else {
       tg.MainButton.show();
@@ -51,6 +75,11 @@ export default function CreateOrder() {
         placeholder={"Ссылка*"}
         onChange={onChangedata}
       />
+      {!isValidLink && (
+        <div className="error">
+          <span>Неправильный формат ссылки</span>
+        </div>
+      )}
       <input
         name="quantity"
         className={"input"}
