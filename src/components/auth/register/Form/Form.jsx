@@ -38,7 +38,7 @@ const Form = () => {
 
   useEffect(() => {
     tg.MainButton.show();
-    if (!auth.user_name) {
+    if (!auth.user_name || !auth.surname || !auth.phone || !auth.address) {
       tg.MainButton.hide();
     } else {
       tg.MainButton.show();
@@ -51,19 +51,19 @@ const Form = () => {
 
   return (
     <div className={"form"}>
-      <h3>Заполните поля </h3>
+      <h3>Заполните все поля и нажмите кнопку отправить</h3>
       <input
         name="user_name"
         className={"input"}
         type="text"
-        placeholder={"Имя"}
+        placeholder={"Имя*"}
         onChange={onChangeAuth}
       />
       <input
         name="surname"
         className={"input"}
         type="text"
-        placeholder={"Фамилия"}
+        placeholder={"Фамилия*"}
         onChange={onChangeAuth}
       />
 
@@ -71,7 +71,7 @@ const Form = () => {
         name="phone"
         className={"input"}
         type="number"
-        placeholder={"Номер телефон"}
+        placeholder={"Номер телефон*"}
         onChange={onChangeAuth}
       />
 
@@ -79,7 +79,7 @@ const Form = () => {
         name="address"
         className={"input"}
         type="text"
-        placeholder={"Адресс"}
+        placeholder={"Адресс*"}
         onChange={onChangeAuth}
       />
     </div>

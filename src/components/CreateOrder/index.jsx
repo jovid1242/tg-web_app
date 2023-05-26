@@ -4,8 +4,7 @@ import { useTelegram } from "../../hooks/useTelegram";
 import "./style.css";
 
 export default function CreateOrder() {
-  const [data, setData] = useState({
-    price: "",
+  const [data, setData] = useState({ 
     quantity: "",
     link: "",
   });
@@ -31,7 +30,7 @@ export default function CreateOrder() {
 
   useEffect(() => {
     tg.MainButton.show();
-    if (!data.link) {
+    if (!data.link || !data.quantity) {
       tg.MainButton.hide();
     } else {
       tg.MainButton.show();
@@ -44,27 +43,19 @@ export default function CreateOrder() {
 
   return (
     <div className={"form"}>
-      <h3>Заполните поля </h3>
+      <h3>Заполните все поля и нажмите кнопку отправить</h3>
       <input
         name="link"
         className={"input"}
         type="text"
-        placeholder={"Ссылка"}
+        placeholder={"Ссылка*"}
         onChange={onChangedata}
       />
-
-      <input
-        name="price"
-        className={"input"}
-        type="number"
-        placeholder={"Цена"}
-        onChange={onChangedata}
-      /> 
       <input
         name="quantity"
         className={"input"}
         type="number"
-        placeholder={"Количество"}
+        placeholder={"Количество*"}
         onChange={onChangedata}
       />
     </div>
