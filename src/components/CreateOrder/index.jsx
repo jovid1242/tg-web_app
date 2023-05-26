@@ -32,21 +32,12 @@ export default function CreateOrder() {
   }, []);
 
   const isValidURL = (string) => {
-    var pattern = new RegExp(
-      "^(https?:\\/\\/)?" +
-        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" +
-        "((\\d{1,3}\\.){3}\\d{1,3}))" +
-        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" +
-        "(\\?[;&a-z\\d%_.~+=-]*)?" +
-        "(\\#[-a-z\\d_]*)?$",
-      "i"
-    );
-    if (!pattern.test(string)) {
+    try {
+      const url = new URL(string);
+      return validDomains.includes(url.hostname);
+    } catch (error) {
       return false;
     }
-    const url = new URL(string);
-
-    return validDomains.includes(url.hostname);
   };
 
   const urlify = (text) => {
@@ -69,8 +60,9 @@ export default function CreateOrder() {
 
   const onChangedata = (e) => {
     let value = e.target.value;
-    if (e.target.name === "link") {
-      value = isValidURL(value) ? value : urlify(value)?.[0];
+    if (e.target.name === "link" && !isValidURL(value)) {
+      const splitedUrl = urlify(value)?.[0];
+      value = isValidURL(splitedUrl) ? splitedUrl : value;
     }
     setData({ ...data, [e.target.name]: value });
   };
@@ -84,7 +76,7 @@ export default function CreateOrder() {
         type="text"
         placeholder={"Ссылка*"}
         onChange={onChangedata}
-        value={data.link || ''}
+        value={data.link || ""}
       />
       {!isValidLink && (
         <div className="error">
