@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { useTelegram } from "../../hooks/useTelegram";
 import { useParams } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
 
 import "./style.css";
-import { useTelegram } from "../../hooks/useTelegram";
 
 const validDomains = ["detail.1688.com", "qr.1688.com", "m.1688.com"];
 
@@ -14,17 +13,16 @@ export default function CreateOrder() {
     size: "",
     color: "",
   });
-  // const [isValidLink, setIsValidLink] = useState(true);
-  const [details, setDetails] = useState({
-    [uuidv4()]: {
+  const [isValidLink, setIsValidLink] = useState(true);
+  const [details, setDetails] = useState([
+    {
       quantity: "",
       link: null,
       size: "",
       color: "",
     },
-  });
-  const [activeFormIndex, setActiveFormIndex] = useState(1);
-  const totalDetails = useMemo(() => Object.keys(details).length, [details]);
+  ]);
+  const [activeFormIndex, setActiveFormIndex] = useState(0);
 
   const { id } = useParams();
   const { tg } = useTelegram();
@@ -64,7 +62,7 @@ export default function CreateOrder() {
   useEffect(() => {
     let isValid = isValidURL(data.link);
 
-    // setIsValidLink(data.link === null ? true : isValid);
+    setIsValidLink(data.link === null ? true : isValid);
 
     if (!isValid || !data.link || !data.quantity) {
       tg.MainButton.hide();
@@ -79,48 +77,32 @@ export default function CreateOrder() {
       const splitedUrl = urlify(value)?.[0];
       value = isValidURL(splitedUrl) ? splitedUrl : value;
     }
-    console.log("onchage", e.target.name, value, details[index]);
-
+    // setData({ ...data, [e.target.name]: value });
     setDetails((prev) => {
       prev[index][e.target.name] = value;
-      return { ...prev };
+      return prev;
     });
   };
 
   const handleAddDetailForm = () => {
-    setDetails({
-      ...details,
-      [uuidv4()]: { quantity: "", link: null, size: "", color: "" },
-    });
-    setActiveFormIndex(activeFormIndex + 1);
+    setDetails((prev) => [
+      ...prev,
+      { quantity: "", link: null, size: "", color: "" },
+    ]);
+    const index = activeFormIndex + 1;
+    setActiveFormIndex(index);
   };
 
   const handleCreateOrder = () => {
     console.log("details", details);
   };
 
-  const handleRemoveDetailForm = () => {};
-
-  const handlePrevDetailForm = () => {
-    if (activeFormIndex > 1) {
-      setActiveFormIndex(activeFormIndex - 1);
-    }
-  };
-
-  const handleNextDetailForm = () => {
-    if (activeFormIndex < totalDetails) {
-      setActiveFormIndex(activeFormIndex + 1);
-    }
-  };
-
   return (
-    <div className="detail-form-container">
-      {Object.keys(details).map((detailId, index) => (
+    <div className="form-container">
+      {details.map((detail, index) => (
         <div
-          className={`detail-form fade ${
-            index + 1 === activeFormIndex ? "active" : ""
-          }`}
-          key={`detail_key_${detailId}`}
+          className={`form fade ${index === activeFormIndex ? "active" : ""}`}
+          key={`detail_key_${index}`}
         >
           {/* <h3>Заполните все поля и нажмите кнопку отправить</h3> */}
           <input
@@ -128,60 +110,42 @@ export default function CreateOrder() {
             className={"input"}
             type="text"
             placeholder={"Ссылка*"}
-            onChange={(ev) => onChangedata(ev, detailId)}
-            value={details[detailId].link || ""}
+            onChange={(ev) => onChangedata(ev, index)}
+            value={detail.link || ""}
           />
-          {/* {!isValidURL(details[detailId].link) && (
+          {!isValidLink && (
             <div className="error">
               <span>Неправильный формат ссылки</span>
             </div>
-          )} */}
+          )}
           <input
             name="quantity"
             className={"input"}
             type="number"
             placeholder={"Количество*"}
-            onChange={(ev) => onChangedata(ev, detailId)}
-            value={details[detailId].quantity}
+            onChange={(ev) => onChangedata(ev, index)}
+            value={detail.quantity}
           />
           <input
             name="size"
             className={"input"}
             type="text"
             placeholder={"Размер*"}
-            onChange={(ev) => onChangedata(ev, detailId)}
-            value={details[detailId].size}
+            onChange={(ev) => onChangedata(ev, index)}
+            value={detail.size}
           />
           <input
             name="color"
             className={"input"}
             type="text"
             placeholder={"Цвет*"}
-            onChange={(ev) => onChangedata(ev, detailId)}
-            value={details[detailId].color}
+            onChange={(ev) => onChangedata(ev, index)}
+            value={detail.color}
           />
         </div>
       ))}
 
-      <div className="detail-form-footer">
-        <div>
-          {totalDetails > 1 && (
-            <button onClick={handleRemoveDetailForm}>Remove</button>
-          )}
-        </div>
-        <div className="actions">
-          {activeFormIndex > 1 && (
-            <button onClick={handlePrevDetailForm}>Prev</button>
-          )}
-          {activeFormIndex !== totalDetails && (
-            <button onClick={handleNextDetailForm}>Next</button>
-          )}
-          {activeFormIndex === totalDetails && (
-            <button onClick={handleAddDetailForm}>Add</button>
-          )}
-        </div>
-      </div>
-
+      <button onClick={handleAddDetailForm}>Add</button>
       <button onClick={handleCreateOrder}>Create</button>
     </div>
   );

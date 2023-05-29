@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 
 import Header from "./components/Header/Header";
 import Order from "./pages/Order";
+import UpdateOrder from './pages/UpdateOrder'
 import Register from "./pages/Register";
 
 const tg = window.Telegram.WebApp;
@@ -21,6 +22,7 @@ function App() {
       <Header />
       <Routes>
         <Route path={"order"} element={<Order />} />
+        <Route path={"order/:id"} element={<UpdateOrder />} />
         <Route path={"register"} element={<Register />} />
       </Routes>
     </div>

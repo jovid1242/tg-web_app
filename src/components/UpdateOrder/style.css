@@ -4,7 +4,7 @@
   padding: 12px 8px;
 }
 
-.detail-form-container {
+.form-container {
   max-width: 1000px;
   position: relative;
   margin: auto;
@@ -12,23 +12,13 @@
 .active {
   display: block;
 }
-.detail-form {
+.form {
   display: none;
 }
 
 .fade {
   animation-name: fade;
   animation-duration: 1.5s;
-}
-.detail-form-footer {
-  display: flex;
-  gap: 30px;
-  justify-content: space-between;
-}
-
-.actions {
-  display: flex;
-  gap: 9px;
 }
 
 @keyframes fade {
