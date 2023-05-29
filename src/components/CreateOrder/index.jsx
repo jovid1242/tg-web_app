@@ -9,6 +9,8 @@ export default function CreateOrder() {
   const [data, setData] = useState({
     quantity: "",
     link: null,
+    size: "",
+    color: ""
   });
   const [isValidLink, setIsValidLink] = useState(true);
 
@@ -46,7 +48,7 @@ export default function CreateOrder() {
     return String(text).match(urlRegex);
   };
 
-  useEffect(() => {
+  useEffect(() => { 
     let isValid = isValidURL(data.link);
 
     setIsValidLink(data.link === null ? true : isValid);
@@ -88,6 +90,20 @@ export default function CreateOrder() {
         className={"input"}
         type="number"
         placeholder={"Количество*"}
+        onChange={onChangedata}
+      />      
+      <input
+        name="size"
+        className={"input"}
+        type="text"
+        placeholder={"Размер*"}
+        onChange={onChangedata}
+      />      
+      <input
+        name="color"
+        className={"input"}
+        type="text"
+        placeholder={"Цвет*"}
         onChange={onChangedata}
       />
     </div>
