@@ -1,13 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { useTelegram } from "../../hooks/useTelegram";
-import { useParams } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
-
 import { PlusOutlined } from "@ant-design/icons";
 import { Upload } from "antd";
 
-import "./style.css";
+import "./CreateOrderPageStyles.css";
+import { useTelegram } from "../../hooks/useTelegram";
 
 const API_URL = "http://localhost:9001/api";
 
@@ -19,10 +17,8 @@ const getBase64 = (file) =>
     reader.onerror = (error) => reject(error);
   });
 
-export default function CreateOrder() {
+export default function CreateOrderPage() {
   const [activeFormIndex, setActiveFormIndex] = useState(1);
-
-  const { orderId } = useParams();
   const { tg } = useTelegram();
 
   const [details, setDetails] = useState([
@@ -36,6 +32,21 @@ export default function CreateOrder() {
       $new: true,
     },
   ]);
+
+  const resetFilters = () => {
+    setActiveFormIndex(1);
+    setDetails([
+      {
+        id: uuidv4(),
+        quantity: "",
+        link: null,
+        size: "",
+        color: "",
+        image: null,
+        $new: true,
+      },
+    ]);
+  };
 
   const activeDetails = useMemo(
     () => details.filter((el) => !el?.$removed),
@@ -99,17 +110,10 @@ export default function CreateOrder() {
     if (totalDetails <= 1) {
       return;
     }
-    if (orderId) {
-      setDetails((prev) => {
-        const detail = prev[activeFormIndex - 1];
-        detail.$removed = true;
-        return [...prev];
-      });
-    } else {
-      setDetails((prev) => [
-        ...prev.filter((el, index) => index !== activeFormIndex - 1),
-      ]);
-    }
+
+    setDetails((prev) => [
+      ...prev.filter((el, index) => index !== activeFormIndex - 1),
+    ]);
 
     setActiveFormIndex(activeFormIndex - 1);
   };
@@ -130,26 +134,26 @@ export default function CreateOrder() {
     const data = new FormData();
 
     details.forEach((elm, index) => {
-      data.append(`[${index}].id`, elm.id);
-      data.append(`[${index}].quantity`, elm.quantity);
-      data.append(`[${index}].link`, elm.link);
-      data.append(`[${index}].size`, elm.size);
-      data.append(`[${index}].color`, elm.color);
-      data.append(`[${index}].image`, elm.image);
-      data.append(`[${index}].$new`, elm.$new);
-      data.append(`[${index}].$removed`, elm.$removed);
+      if (elm.link) {
+        data.append(`[${index}].id`, elm.id);
+        data.append(`[${index}].quantity`, elm.quantity);
+        data.append(`[${index}].link`, elm.link);
+        data.append(`[${index}].size`, elm.size);
+        data.append(`[${index}].color`, elm.color);
+        data.append(`[${index}].image`, elm.image);
+        data.append(`[${index}].$new`, elm.$new);
+        data.append(`[${index}].$removed`, elm.$removed);
+      }
     });
 
-    axios.post(`${API_URL}/order`, data);
-  };
-
-  useEffect(() => {
-    if (orderId) {
-      axios.get(`${API_URL}/order/${orderId}`).then((res) => {
-        setDetails(res.data?.order?.OrderDetails);
-      });
+    if (Array.from(data.entries()).length) {
+      data.append("chatId", 12345678);
+      axios.post(
+        `${API_URL}/order?api_key=skadjhvksdjvbksdjvbksjdbvksjdfuieqw923386452837rgdfwkjqndlksand`,
+        data
+      );
     }
-  }, [orderId]);
+  };
 
   const handleChange = async ({ fileList: newFileList }, detailId) => {
     let previewImage = await getBase64(newFileList[0]?.originFileObj);

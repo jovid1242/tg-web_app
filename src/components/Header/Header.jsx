@@ -4,12 +4,14 @@ import { useTelegram } from "../../hooks/useTelegram";
 import "./style.css";
 
 const Header = () => {
-  const { user, onClose  } = useTelegram();
+  const { onClose } = useTelegram();
 
   return (
     <div className={"header"}>
-      <Button onClick={onClose}>Закрыть</Button>
-      <span className={"username"}>{user?.username}</span> 
+      <Button style={{ fontWeight: 700 }} onClick={onClose}>
+        Закрыть
+      </Button>
+      <span className={"logo"}>Chinahouse</span>
     </div>
   );
 };

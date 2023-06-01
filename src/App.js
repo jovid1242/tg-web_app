@@ -4,8 +4,8 @@ import { useTelegram } from "./hooks/useTelegram";
 import { Route, Routes } from "react-router-dom";
 
 import Header from "./components/Header/Header";
-import Order from "./pages/Order";
-import UpdateOrder from './pages/UpdateOrder'
+import CreateOrderPage from "./pages/CreateOrderPage/CreateOrderPage";
+import UpdateOrderPage from "./pages/UpdateOrderPage/UpdateOrderPage";
 import Register from "./pages/Register";
 
 const tg = window.Telegram.WebApp;
@@ -21,8 +21,8 @@ function App() {
     <div className="App">
       <Header />
       <Routes>
-        <Route path={"order"} element={<Order />} />
-        <Route path={"order/:id"} element={<UpdateOrder />} />
+        <Route path={"order"} element={<CreateOrderPage />} />
+        <Route path={"order/:orderId"} element={<UpdateOrderPage />} />
         <Route path={"register"} element={<Register />} />
       </Routes>
     </div>

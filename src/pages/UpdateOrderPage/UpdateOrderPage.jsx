@@ -7,7 +7,7 @@ import axios from "axios";
 import { PlusOutlined } from "@ant-design/icons";
 import { Upload } from "antd";
 
-import "./style.css";
+import "./UpdateOrderPageStyles.css";
 
 const API_URL = "http://localhost:9001/api";
 
@@ -19,7 +19,7 @@ const getBase64 = (file) =>
     reader.onerror = (error) => reject(error);
   });
 
-export default function CreateOrder() {
+export default function UpdateOrderPage() {
   const [activeFormIndex, setActiveFormIndex] = useState(1);
 
   const { orderId } = useParams();
@@ -130,17 +130,23 @@ export default function CreateOrder() {
     const data = new FormData();
 
     details.forEach((elm, index) => {
-      data.append(`[${index}].id`, elm.id);
-      data.append(`[${index}].quantity`, elm.quantity);
-      data.append(`[${index}].link`, elm.link);
-      data.append(`[${index}].size`, elm.size);
-      data.append(`[${index}].color`, elm.color);
-      data.append(`[${index}].image`, elm.image);
-      data.append(`[${index}].$new`, elm.$new);
-      data.append(`[${index}].$removed`, elm.$removed);
+      console.log('link==>>', elm.link);
+      if (elm.link) {
+        console.log('link=not=posibble==>>', elm.link);
+        data.append(`[${index}].id`, elm.id);
+        data.append(`[${index}].quantity`, elm.quantity);
+        data.append(`[${index}].link`, elm.link);
+        data.append(`[${index}].size`, elm.size);
+        data.append(`[${index}].color`, elm.color);
+        data.append(`[${index}].image`, elm.image);
+        data.append(`[${index}].$new`, elm.$new);
+        data.append(`[${index}].$removed`, elm.$removed);
+      }
     });
 
-    axios.post(`${API_URL}/order`, data);
+    if (data.length) {
+      axios.post(`${API_URL}/order`, data);
+    }
   };
 
   useEffect(() => {
